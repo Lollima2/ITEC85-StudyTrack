@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb');
+const { encrypt, decrypt } = require('../utils/encryption');
 
 // Initialize AcadTasks collection
 router.use(async (req, res, next) => {
@@ -39,15 +40,15 @@ router.get('/', async (req, res) => {
     const acadTasksCollection = db.collection('AcadTasks');
     const tasks = await acadTasksCollection.find({}).toArray();
     
-    // Transform MongoDB _id to id for frontend compatibility
+    // Transform MongoDB _id to id for frontend compatibility and decrypt sensitive fields
     const transformedTasks = tasks.map(task => ({
       id: task._id.toString(),
       userId: task.userId,
-      title: task.title,
-      description: task.description || '',
-      priority: task.priority,
+      title: decrypt(task.title),
+      description: decrypt(task.description || ''),
+      priority: decrypt(task.priority),
       deadline: task.deadline,
-      subject: task.subject,
+      subject: decrypt(task.subject),
       completed: task.completed || false,
       createdAt: task.createdAt,
       updatedAt: task.updatedAt
@@ -70,15 +71,15 @@ router.get('/user/:userId', async (req, res) => {
     const acadTasksCollection = db.collection('AcadTasks');
     const tasks = await acadTasksCollection.find({ userId: req.params.userId }).toArray();
     
-    // Transform MongoDB _id to id for frontend compatibility
+    // Transform MongoDB _id to id for frontend compatibility and decrypt sensitive fields
     const transformedTasks = tasks.map(task => ({
       id: task._id.toString(),
       userId: task.userId,
-      title: task.title,
-      description: task.description || '',
-      priority: task.priority,
+      title: decrypt(task.title),
+      description: decrypt(task.description || ''),
+      priority: decrypt(task.priority),
       deadline: task.deadline,
-      subject: task.subject,
+      subject: decrypt(task.subject),
       completed: task.completed || false,
       createdAt: task.createdAt,
       updatedAt: task.updatedAt
@@ -110,14 +111,14 @@ router.post('/', async (req, res) => {
     
     const acadTasksCollection = db.collection('AcadTasks');
     
-    // Create new academic task
+    // Create new academic task with encrypted sensitive fields
     const newTask = {
       userId,
-      title,
-      description: description || '',
-      priority: priority || 'medium',
+      title: encrypt(title),
+      description: encrypt(description || ''),
+      priority: encrypt(priority || 'medium'),
       deadline: deadline ? new Date(deadline) : new Date(),
-      subject: subject || '',
+      subject: encrypt(subject || ''),
       completed: completed || false,
       createdAt: new Date(),
       updatedAt: new Date()
@@ -129,8 +130,13 @@ router.post('/', async (req, res) => {
     
     res.status(201).json({
       id: result.insertedId.toString(),
-      ...newTask,
+      userId: newTask.userId,
+      title: decrypt(newTask.title),
+      description: decrypt(newTask.description),
+      priority: decrypt(newTask.priority),
       deadline: newTask.deadline,
+      subject: decrypt(newTask.subject),
+      completed: newTask.completed,
       createdAt: newTask.createdAt,
       updatedAt: newTask.updatedAt
     });
@@ -166,11 +172,17 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ message: 'Task not found' });
     }
     
-    // Prepare update data
+    // Prepare update data with encrypted sensitive fields
     const updateData = {
       ...req.body,
       updatedAt: new Date()
     };
+    
+    // Encrypt sensitive fields if they exist in the update
+    if (updateData.title) updateData.title = encrypt(updateData.title);
+    if (updateData.description) updateData.description = encrypt(updateData.description);
+    if (updateData.priority) updateData.priority = encrypt(updateData.priority);
+    if (updateData.subject) updateData.subject = encrypt(updateData.subject);
     
     // If deadline is provided, convert it to Date object
     if (updateData.deadline) {
@@ -351,11 +363,11 @@ router.get('/test-create', async (req, res) => {
     
     const sampleTask = {
       userId: "test-user-123",
-      title: "Sample Task " + new Date().toISOString(),
-      description: "This is a test task",
-      priority: "medium",
+      title: encrypt("Sample Task " + new Date().toISOString()),
+      description: encrypt("This is a test task"),
+      priority: encrypt("medium"),
       deadline: new Date(),
-      subject: "Test Subject",
+      subject: encrypt("Test Subject"),
       completed: false,
       createdAt: new Date(),
       updatedAt: new Date()
@@ -370,7 +382,15 @@ router.get('/test-create', async (req, res) => {
       taskId: result.insertedId,
       task: {
         id: result.insertedId,
-        ...sampleTask
+        userId: sampleTask.userId,
+        title: decrypt(sampleTask.title),
+        description: decrypt(sampleTask.description),
+        priority: decrypt(sampleTask.priority),
+        deadline: sampleTask.deadline,
+        subject: decrypt(sampleTask.subject),
+        completed: sampleTask.completed,
+        createdAt: sampleTask.createdAt,
+        updatedAt: sampleTask.updatedAt
       }
     });
   } catch (err) {

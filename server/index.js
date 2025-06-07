@@ -4,6 +4,8 @@ const { MongoClient } = require('mongodb');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config({ path: './config.env' });
+// Also load the root .env file for encryption key
+require('dotenv').config({ path: '../.env' });
 
 const app = express();
 app.use(express.json());
