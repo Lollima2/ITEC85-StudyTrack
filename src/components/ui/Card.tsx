@@ -9,7 +9,7 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ children, className = '', onClick, animate = true }) => {
-  const baseClasses = 'bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden';
+  const baseClasses = 'w-full p-8 rounded-2xl backdrop-blur-lg bg-white/30 dark:bg-white/10 shadow-xl border border-white/20 ';
 
   const cardElement = (
     <div 

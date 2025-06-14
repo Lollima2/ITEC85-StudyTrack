@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import { Alert } from "@heroui/react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -7,12 +8,12 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+const Inputs = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, fullWidth = false, icon, className = '', ...props }, ref) => {
-    const baseClasses = 'rounded-md shadow-sm border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-500 focus:ring-opacity-50 dark:bg-gray-800 dark:border-gray-700 dark:text-white';
+    const baseClasses = 'bg-white dark:bg-gray-800 rounded-full transition-colors duration-300 ease-in-out py-2 shadow-sm border border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-500 focus:ring-opacity-50 dark:border-gray-700 dark:text-white placeholder:text-sm placeholder:text-gray-400 placeholder:font-medium';
     const errorClasses = 'border-red-500 focus:border-red-500 focus:ring-red-500';
     const widthClass = fullWidth ? 'w-full' : '';
-    
+
     return (
       <div className={`${widthClass} ${className}`}>
         {label && (
@@ -28,18 +29,24 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           <input
             ref={ref}
-            className={`${baseClasses} ${error ? errorClasses : ''} ${icon ? 'pl-10' : ''} ${widthClass}`}
+            className={`${baseClasses} rounded-full ${error ? errorClasses : ''} ${icon ? 'pl-10 pr-5': ''} ${widthClass}`}
             {...props}
           />
         </div>
         {error && (
-          <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
+          <Alert
+            hideIcon color="danger"
+            variant="faded"
+            title={error}
+            className="mt-2 px-3 py-0 text-xs leading-tight rounded-full"
+          />
         )}
       </div>
     );
   }
 );
 
-Input.displayName = 'Input';
+Inputs.displayName = 'Inputs';
 
-export default Input;
+
+export default Inputs;

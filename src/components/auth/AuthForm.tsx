@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { User, Mail, Lock, EyeOff, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { AuthFormData } from '../../types';
-import Button from '../ui/Button';
+import { Button } from "@heroui/react";
 import Input from '../ui/Input';
 import Card from '../ui/Card';
+import { Alert } from "@heroui/react";
 
 interface AuthFormProps {
   type: 'login' | 'signup';
-  onSubmit: (data: AuthFormData) => void;
+  onSubmit: (data: AuthFormData, setAuthError: (error: string) => void) => void;
   onToggleForm: () => void;
 }
 
@@ -18,15 +19,15 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
     email: '',
     password: '',
   });
-  
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [authError, setAuthError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
-    // Clear error when user types
+
     if (errors[name]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -34,50 +35,56 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
         return newErrors;
       });
     }
+
+    // Clear auth error if user changes input
+    if (authError) setAuthError('');
   };
-  
+
   const validateForm = () => {
-    const newErrors: {[key: string]: string} = {};
-    
+    const newErrors: { [key: string]: string } = {};
+
     if (type === 'signup' && !formData.name?.trim()) {
       newErrors.name = 'Name is required';
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
-    
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (validateForm()) {
-      onSubmit(formData);
+      setAuthError('');
+      onSubmit(formData, setAuthError); // <- pass the setter
     }
   };
-  
+
   return (
-    <Card className="w-full max-w-md p-6">
+    <Card className="w-full max-w-md px-20 mx-auto flex flex-col justify-center items-center bg-white dark:bg-gray-900 shadow-lg">
       <motion.div
+        key={type}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
+        className="w-full"
       >
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
           {type === 'login' ? 'Welcome Back' : 'Create Your Account'}
         </h2>
-        
+
+
         <form onSubmit={handleSubmit} className="space-y-4">
           {type === 'signup' && (
             <Input
@@ -91,7 +98,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
               icon={<User size={18} className="text-gray-400" />}
             />
           )}
-          
+
           <Input
             name="email"
             type="email"
@@ -103,7 +110,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
             error={errors.email}
             icon={<Mail size={18} className="text-gray-400" />}
           />
-          
+
           <div className="relative">
             <Input
               name="password"
@@ -124,17 +131,27 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          
+
+          {authError && (
+            <Alert
+              hideIcon
+              color="danger"
+              variant="faded"
+              title={authError}
+              className="mt-2 px-3 py-0 text-xs leading-tight rounded-full"
+            />
+          )}
+
           <Button
             type="submit"
-            variant="primary"
             fullWidth
-            className="mt-6"
+            className="bg-gradient-to-tr from-circle1 to-circle2 text-white shadow-lg mt-6 font-medium"
+            radius="full"
           >
             {type === 'login' ? 'Sign In' : 'Sign Up'}
           </Button>
         </form>
-        
+
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600 dark:text-gray-400">
             {type === 'login' ? "Don't have an account?" : "Already have an account?"}
@@ -148,6 +165,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
           </p>
         </div>
       </motion.div>
+
+
     </Card>
   );
 };
