@@ -5,6 +5,7 @@ import TaskList from '../components/tasks/TaskList';
 import TaskForm from '../components/tasks/TaskForm';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
+import Card2 from '../components/ui/Card2';
 import useTaskStore from '../store/useTaskStore';
 import useAuthStore from '../store/useAuthStore';
 import { Task } from '../types';
@@ -80,10 +81,10 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8">
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col justify-center lg:flex-row gap-6">
 
         {/* Left Column: Task Container */}
-        <Card className="p-6 flex-1">
+        <div className="p-6 flex-1">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Tasks</h1>
@@ -170,28 +171,26 @@ const HomePage: React.FC = () => {
               emptyMessage="You haven't completed any tasks yet."
             />
           )}
-        </Card>
+        </div>
 
 
         {/* Right Column: Calendar and Weather */}
         <div className="lg:w-1/3 flex flex-col gap-4">
           {/* Calendar Container */}
-          <Card className="p-4 h-64">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Calendar</h2>
+          <Card2 className="p-4 h-64">
             <div className="h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
               {/* Replace this with a real calendar component */}
               <Calendar className="w-24 h-24" />
               <span className="ml-2">Calendar View Coming Soon</span>
             </div>
-          </Card>
+          </Card2>
 
           {/* Weather Container */}
-          <Card className="p-4 h-64">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Weather</h2>
-            <div className="h-full flex items-center justify-center text-gray-600 dark:text-gray-300">
+          <Card2 className="flex flex-col">
+            <div className="flex-1 flex items-center justify-center ">
               <WeatherWidget />
             </div>
-          </Card>
+          </Card2>
         </div>
       </div>
     </div>
