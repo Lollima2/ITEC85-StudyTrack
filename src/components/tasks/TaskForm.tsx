@@ -10,9 +10,10 @@ interface TaskFormProps {
   initialTask?: Task;
   onSubmit: () => void;
   onCancel: () => void;
+  onShowModal?: (message: string, type: 'add' | 'edit') => void;
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onSubmit, onCancel }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ initialTask, onSubmit, onCancel, onShowModal }) => {
   const { user } = useAuthStore();
   const { addTask, updateTask, categories, addCategory } = useTaskStore();
   
@@ -103,6 +104,8 @@ const handleSubmit = async (e: React.FormEvent) => {
       
       // Then update local state
       updateTask(initialTask.id, { ...taskData, deadline: new Date(taskData.deadline) });
+
+      onShowModal?.('Task updated successfully!', 'edit');
     } else {
       // Add to database
       console.log('Sending POST request to http://localhost:3000/acadtasks');
@@ -129,6 +132,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         // Cast to Task to include 'id'
         id: responseData.id || responseData._id
       } as Task);
+      onShowModal?.('Task added successfully!', 'add');
     }
     
     onSubmit();

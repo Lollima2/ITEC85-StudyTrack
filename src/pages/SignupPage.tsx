@@ -7,11 +7,13 @@ import useAuthStore from '../store/useAuthStore';
 import { AuthFormData } from '../types';
 import axios from 'axios';
 import heroIcon from '../components/icons/Hero_Logo.png';
+import useToast from '../store/useToast';
 
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
   const { signup } = useAuthStore();
   const [error, setError] = useState('');
+  const { showToast } = useToast();
 
   const handleSignup = async (data: AuthFormData) => {
     if (data.name && data.email) {
@@ -26,6 +28,7 @@ const SignupPage: React.FC = () => {
           email: data.email,
         });
 
+        showToast('Account created successfully!', 'add');
         navigate('/');
       } catch (err: any) {
         console.error('Signup error:', err);

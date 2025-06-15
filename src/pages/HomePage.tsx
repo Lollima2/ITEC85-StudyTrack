@@ -8,15 +8,39 @@ import Card from '../components/ui/Card';
 import useTaskStore from '../store/useTaskStore';
 import useAuthStore from '../store/useAuthStore';
 import { Task } from '../types';
+import NotificationModal from "../components/ui/NotificationModal";
+import { useLocation } from 'react-router-dom';
+import useToast from '../store/useToast';
 
 const HomePage: React.FC = () => {
   const { user } = useAuthStore();
   const { tasks, categories, getUpcomingTasks } = useTaskStore();
 
+  const location = useLocation();
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    if (location.state?.showToast && location.state?.toastMessage) {
+      showToast(location.state.toastMessage, "success");
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state, showToast]);
+
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [filter, setFilter] = useState<'all' | 'today' | 'upcoming' | 'completed' | 'overdue'>('all');
   const [priorityFilter, setPriorityFilter] = useState<Task['priority'] | 'all'>('all');
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalType, setModalType] = useState<"add" | "edit" | "delete">("add");
+
+  const showModal = (message: string, type: "add" | "edit" | "delete") => {
+    setModalMessage(message);
+    setModalType(type);
+    setModalVisible(true);
+
+    setTimeout(() => setModalVisible(false), 3000); // Hide after 3 seconds
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -142,7 +166,10 @@ const HomePage: React.FC = () => {
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Create New Task</h2>
               <TaskForm
-                onSubmit={() => setIsAddingTask(false)}
+                onSubmit={() => {
+                  showModal("Task added successfully!", "add");
+                  setIsAddingTask(false);
+                }}
                 onCancel={() => setIsAddingTask(false)}
               />
             </Card>
@@ -155,6 +182,7 @@ const HomePage: React.FC = () => {
           title="Incomplete Tasks"
           tasks={incompleteTasks}
           emptyMessage="No incomplete tasks. Great job!"
+          onShowModal={showModal}
         />
       )}
 
@@ -163,8 +191,16 @@ const HomePage: React.FC = () => {
           title="Completed Tasks"
           tasks={completedTasks}
           emptyMessage="You haven't completed any tasks yet."
+          onShowModal={showModal}
         />
       )}
+
+      <NotificationModal
+        message={modalMessage}
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        type={modalType}
+      />
     </div>
   );
 };
