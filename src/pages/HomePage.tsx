@@ -10,6 +10,8 @@ import useTaskStore from '../store/useTaskStore';
 import useAuthStore from '../store/useAuthStore';
 import { Task } from '../types';
 import WeatherWidget from '../components/widgets/WeatherWidget';
+import SpotifyWidget from '../components/widgets/SpotifyWidget';
+import ClockWidget from '../components/widgets/ClockWidget';
 
 
 const HomePage: React.FC = () => {
@@ -174,23 +176,29 @@ const HomePage: React.FC = () => {
         </div>
 
 
-        {/* Right Column: Calendar and Weather */}
-        <div className="lg:w-1/3 flex flex-col gap-4">
-          {/* Calendar Container */}
-          <Card2 className="p-4 h-64">
-            <div className="h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-              {/* Replace this with a real calendar component */}
-              <Calendar className="w-24 h-24" />
-              <span className="ml-2">Calendar View Coming Soon</span>
+        {/* Right Column:*/}
+        <div className="lg:w-1/4 flex flex-col gap-4">
+          {/* Spotify Container */}
+          <Card2 className="flex flex-col">
+            <div className="flex-1 flex items-center justify-center ">
+              <SpotifyWidget />
             </div>
           </Card2>
 
-          {/* Weather Container */}
+          {/* Clock Container */}
           <Card2 className="flex flex-col">
+            <div className="flex-1 flex items-center justify-center ">
+              <ClockWidget />
+            </div>
+          </Card2>
+
+
+          {/* Weather Container */}
+          <div className="flex flex-col">
             <div className="flex-1 flex items-center justify-center ">
               <WeatherWidget />
             </div>
-          </Card2>
+          </div>
         </div>
       </div>
     </div>
