@@ -28,8 +28,9 @@ const SignupPage: React.FC = () => {
           email: data.email,
         });
 
-        showToast('Account created successfully!', 'add');
-        navigate('/');
+        showToast('Account created successfully!', 'center');
+        setTimeout(() => navigate('/'), 2000);
+
       } catch (err: any) {
         console.error('Signup error:', err);
         setError(err.response?.data?.message || 'Failed to create account');

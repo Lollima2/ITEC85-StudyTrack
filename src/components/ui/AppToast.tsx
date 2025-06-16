@@ -10,6 +10,7 @@ const toastTypeStyles = {
   edit: { bg: 'bg-yellow-500', Icon: Info },
   delete: { bg: 'bg-red-500', Icon: XCircle },
   error: { bg: 'bg-red-500', Icon: XCircle },
+  center: { bg: 'bg-blue-500', Icon: Info },
 };
 
 const AppToast: React.FC = () => {
@@ -27,11 +28,14 @@ const AppToast: React.FC = () => {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: type === 'center' ? '-50%' : -30 }}
+          animate={{ opacity: 1, y: type === 'center' ? '-50%' : 0 }}
+          exit={{ opacity: 0, y: type === 'center' ? '-50%' : -30 }}
           transition={{ duration: 0.3 }}
-          className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-50 px-6 py-3 text-white rounded-xl shadow-lg ${bg}`}
+          className={`fixed z-50 px-6 py-3 text-white rounded-xl shadow-lg ${bg} 
+            ${type === 'center' 
+              ? 'top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2' 
+              : 'top-6 left-1/2 transform -translate-x-1/2'}`}
         >
           <div className="flex items-center space-x-2">
             <Icon size={20} />
