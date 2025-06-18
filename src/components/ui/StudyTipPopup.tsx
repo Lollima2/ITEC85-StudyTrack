@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from "@heroui/react";
 
 const studyTips = [
   "Basahin mo 'yung notes mo parang chismis—paulit-ulit at may feelings!",
@@ -36,38 +37,78 @@ const StudyTipPopup = () => {
 
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-40 dark:bg-black dark:bg-opacity-70 flex items-center justify-center z-50 transition-opacity duration-300 ${
-        animateOut ? 'opacity-0' : 'opacity-100'
-      }`}
+      className={`
+        fixed inset-0 z-50 flex items-center justify-center
+        bg-black/80 dark:bg-[#0a1624]/80
+        transition-opacity duration-300
+        ${animateOut ? 'opacity-0' : 'opacity-100'}
+        backdrop-blur-sm
+      `}
     >
       <div
-        className={`bg-gradient-to-br from-white via-gray-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-green-900 rounded-2xl p-8 max-w-md w-full shadow-2xl border border-green-200 dark:border-green-700
-        transform transition-all duration-300
-        ${animateOut ? 'scale-95 opacity-0 translate-y-8' : 'scale-100 opacity-100 translate-y-0'}
+        className={`
+          rounded-3xl p-0 max-w-lg w-full shadow-2xl
+          transform transition-all duration-300
+          ${animateOut ? 'scale-95 opacity-0 translate-y-8' : 'scale-100 opacity-100 translate-y-0'}
+          bg-gradient-to-br from-white to-sky-100 dark:from-[#181f2a] dark:to-[#232e3e]
+          border border-sky-200 dark:border-none
         `}
-        style={{
-          boxShadow:
-            '0 8px 32px 0 rgba(34,197,94,0.15), 0 1.5px 4px 0 rgba(0,0,0,0.08)'
-        }}
       >
-        <div className="flex flex-col items-center">
-          <div className="mb-4">
-            <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
-              <circle cx="24" cy="24" r="24" fill="#22C55E" opacity="0.15"/>
-              <path d="M24 14v12" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round"/>
-              <circle cx="24" cy="32" r="1.5" fill="#22C55E"/>
-            </svg>
+        {/* Top Bar with Icon and Close */}
+        <div className="flex items-center justify-between px-6 pt-6 pb-2">
+          <div className="flex items-center gap-2">
+            <div className="bg-gradient-to-tr from-[#38BDF8] to-[#027BF9] rounded-full p-2 shadow-lg shadow-[#027BF9]/40">
+              <svg width="32" height="32" fill="none" viewBox="0 0 48 48">
+                <defs>
+                  <linearGradient id="study-tip-gradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#38BDF8" />
+                    <stop offset="1" stopColor="#027BF9" />
+                  </linearGradient>
+                </defs>
+                <circle cx="24" cy="24" r="24" fill="url(#study-tip-gradient)" opacity="0.95" />
+                <path d="M24 14v12" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
+                <circle cx="24" cy="32" r="1.5" fill="#fff" />
+              </svg>
+            </div>
+            <span
+              className="text-lg font-bold tracking-wide text-[#027BF9]"
+              style={{
+                textShadow: '0 1px 2px rgba(2, 123, 249, 0.5)' // subtle glow
+              }}
+            >
+              Study Tip
+            </span>
           </div>
-          <p className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
-            Study Tip
-          </p>
-          <p className="text-base mb-8 text-gray-700 italic dark:text-gray-300">{randomTip}</p>
+
           <button
             onClick={handleClose}
-            className="px-6 py-2 bg-green-600 text-white rounded-full shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200"
+            aria-label="Close"
+            className="rounded-full p-2 hover:bg-sky-100 dark:hover:bg-[#232e3e] transition-colors"
+          >
+            <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+              <path d="M6 6l8 8M14 6l-8 8" stroke="#38BDF8" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+        {/* Tip Content */}
+        <div className="px-8 pb-8 pt-2 flex flex-col items-center">
+          <p
+            className="text-base md:text-lg text-center italic mb-8 text-slate-700 dark:text-sky-100"
+            style={{
+              textShadow: '0 1px 2px rgba(56, 189, 248, 0.3)', // lighter, more subtle glow
+              lineHeight: 1.6,
+              letterSpacing: '0.01em',
+            }}
+          >
+            {randomTip}
+          </p>
+          <Button
+            className="bg-gradient-to-tr from-circle1 to-circle2 text-white shadow-lg mt-6 font-medium"
+            radius="full"
+            onClick={handleClose}
           >
             OK, Got it!
-          </button>
+          </Button>
         </div>
       </div>
     </div>

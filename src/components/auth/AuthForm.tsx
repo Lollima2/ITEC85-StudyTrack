@@ -5,7 +5,7 @@ import { AuthFormData } from '../../types';
 import { Button } from "@heroui/react";
 import Input from '../ui/Input';
 import Card from '../ui/Card';
-import { Alert } from "@heroui/react";
+
 
 interface AuthFormProps {
   type: 'login' | 'signup';
@@ -72,7 +72,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
   };
 
   return (
-    <Card className="w-full max-w-md px-20 mx-auto flex flex-col justify-center items-center bg-white dark:bg-gray-900 shadow-lg">
+    <Card className="w-full max-w-md px-4 sm:px-8 md:px-12 lg:px-20 mx-auto flex flex-col justify-center items-center bg-white dark:bg-gray-900 shadow-lg">
       <motion.div
         key={type}
         initial={{ opacity: 0, y: 10 }}
@@ -132,15 +132,24 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
             </button>
           </div>
 
-          {authError && (
-            <Alert
-              hideIcon
-              color="danger"
-              variant="faded"
-              title={authError}
-              className="mt-2 px-3 py-0 text-xs leading-tight rounded-full"
-            />
-          )}
+            {authError && (
+              <div className="flex items-center gap-2 mt-3 px-4 py-1 rounded-full border border-red-300 dark:border-red-700 bg-red-50/60 dark:bg-red-900/40 text-red-700 dark:text-red-200 text-sm font-medium backdrop-blur-md animate-shake transition-all duration-300">
+              <svg
+                className="w-4 h-4 text-red-600 dark:text-red-300"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"
+                />
+              </svg>
+              </div>
+            )}
+            
 
           <Button
             type="submit"

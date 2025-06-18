@@ -1,11 +1,12 @@
 import React from 'react';
+import { Button } from "@heroui/react";
 import {
   Navbar as HeroNavbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   Link as HeroLink,
-  Button,
+
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
@@ -101,7 +102,7 @@ const Navbar: React.FC = () => {
                 <Button
                   variant="light"
                   size="sm"
-                  className={hoverBox + ' gap-2'}
+                  className={hoverBox + ' gap-2 font-medium'}
                 >
                   <User size={18} />
                   {user?.name}

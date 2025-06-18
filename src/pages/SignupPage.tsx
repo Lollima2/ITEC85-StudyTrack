@@ -7,11 +7,13 @@ import useAuthStore from '../store/useAuthStore';
 import { AuthFormData } from '../types';
 import axios from 'axios';
 import heroIcon from '../components/icons/Hero_Logo.png';
+import useToast from '../store/useToast';
 
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
   const { signup } = useAuthStore();
   const [error, setError] = useState('');
+  const { showToast } = useToast();
 
   const handleSignup = async (data: AuthFormData) => {
     if (data.name && data.email) {
@@ -25,6 +27,8 @@ const SignupPage: React.FC = () => {
           name: data.name,
           email: data.email,
         });
+
+        showToast('Account created successfully!', 'add');
 
         navigate('/');
       } catch (err: any) {
@@ -85,10 +89,24 @@ const SignupPage: React.FC = () => {
 
           <div className="w-full">
             {error && (
-              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-                {error}
+              <div className="flex items-center gap-2 mt-3 px-4 py-1 rounded-full border border-red-300 dark:border-red-700 bg-red-50/60 dark:bg-red-900/40 text-red-700 dark:text-red-200 text-sm font-medium backdrop-blur-md animate-shake transition-all duration-300">
+              <svg
+              className="w-4 h-4 text-red-600 dark:text-red-300"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              >
+              <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"
+              />
+              </svg>
+              <span className="truncate">{error}</span>
               </div>
             )}
+
             <AuthForm
               type="signup"
               onSubmit={handleSignup}
