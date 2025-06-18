@@ -14,9 +14,9 @@
                             </span>
                         </div>
                         <iframe
-                            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
+                            src="https://open.spotify.com/embed/playlist/00zvV81yVu0rJCpJoBGagW"
                             width="100%"
-                            height="80"
+                            height="152"
                             style={{ borderRadius: '0.9rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', background: 'transparent' }}
                             frameBorder={0}
                             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -24,8 +24,7 @@
                             className="border-gray-200 dark:border-gray-700"
                             title="Spotify Player"
                             scrolling="no"
-                        ></iframe>
-                    </div>
+                        ></iframe>    </div>
                 </div>
             </div>
         );

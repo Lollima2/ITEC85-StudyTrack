@@ -6,6 +6,7 @@ import TaskForm from '../components/tasks/TaskForm';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Card2 from '../components/ui/Card2';
+import StudyTipPopup from '../components/ui/StudyTipPopup';
 import useTaskStore from '../store/useTaskStore';
 import useAuthStore from '../store/useAuthStore';
 import { Task } from '../types';
@@ -84,6 +85,8 @@ const HomePage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8">
       <div className="flex flex-col justify-center lg:flex-row gap-6">
+
+        <StudyTipPopup />
 
         {/* Left Column: Task Container */}
         <div className="p-6 flex-1">
@@ -177,7 +180,7 @@ const HomePage: React.FC = () => {
 
 
         {/* Right Column:*/}
-        <div className="lg:w-1/4 flex flex-col gap-4">
+        <div className="lg:w-[25%] flex flex-col gap-4">
           {/* Spotify Container */}
           <Card2 className="flex flex-col">
             <div className="flex-1 flex items-center justify-center ">

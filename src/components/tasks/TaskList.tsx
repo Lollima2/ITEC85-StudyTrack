@@ -56,14 +56,6 @@ const TaskList: React.FC<TaskListProps> = ({
           >
             {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
           </motion.button>
-          
-          <Button
-            size="sm"
-            icon={<Plus size={16} />}
-            onClick={() => setIsAddingTask(true)}
-          >
-            Add Task
-          </Button>
         </div>
       </div>
       
