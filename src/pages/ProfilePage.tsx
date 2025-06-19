@@ -24,12 +24,12 @@ const colorMap = {
     bar: 'bg-green-500'
   },
   blue: {
-    bg: 'bg-blue-100 dark:bg-blue-900/60',
+    bg: 'bg-blue-100 dark:bg-blue-800/80',
     icon: 'text-blue-600 dark:text-blue-300',
     bar: 'bg-blue-500'
   },
   amber: {
-    bg: 'bg-amber-100 dark:bg-amber-900/60',
+    bg: 'bg-amber-100 dark:bg-yellow-900/80',
     icon: 'text-amber-600 dark:text-amber-300',
     bar: 'bg-amber-500'
   },
@@ -125,7 +125,7 @@ const ProfilePage: React.FC = () => {
                         variant="bordered"
                         radius="full"
                         className="mt-1"
-                        onClick={() => {
+                        onPress={() => {
                           setIsEditing(false);
                           setName(user.name);
                         }}
@@ -135,7 +135,7 @@ const ProfilePage: React.FC = () => {
                       </Button>
                       <Button
                         type="button"
-                        onClick={handleSaveProfile}
+                        onPress={handleSaveProfile}
                         className="bg-gradient-to-tr from-circle1 to-circle2 text-white shadow-lg font-medium mt-1"
                         radius="full"
                         disabled={isLoading}
