@@ -24,7 +24,7 @@ export const StudyTrackLogo = () => (
       <img src={Logo} alt="StudyTrack Logo" className="h-8 w-8 rounded-full object-cover" />
     </span>
     <p className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#38BDF8] to-[#027BF9]">
-      StudyTrack
+      IskoTask
     </p>
   </div>
 );
