@@ -19,23 +19,23 @@ import useTaskStore from '../store/useTaskStore';
 
 const colorMap = {
   green: {
-    bg: 'bg-green-100 dark:bg-green-900/60',
-    icon: 'text-green-600 dark:text-green-300',
+    bg: 'bg-green-100 dark:bg-green-700/60',
+    icon: 'text-green-600 dark:text-green-200',
     bar: 'bg-green-500'
   },
   blue: {
-    bg: 'bg-blue-100 dark:bg-blue-800/80',
-    icon: 'text-blue-600 dark:text-blue-300',
+    bg: 'bg-blue-100 dark:bg-blue-700/60',
+    icon: 'text-blue-600 dark:text-blue-200',
     bar: 'bg-blue-500'
   },
   amber: {
-    bg: 'bg-amber-100 dark:bg-yellow-900/80',
-    icon: 'text-amber-600 dark:text-amber-300',
+    bg: 'bg-amber-100 dark:bg-yellow-700/60',
+    icon: 'text-amber-600 dark:text-yellow-200',
     bar: 'bg-amber-500'
   },
   red: {
-    bg: 'bg-red-100 dark:bg-red-900/60',
-    icon: 'text-red-600 dark:text-red-300',
+    bg: 'bg-red-100 dark:bg-red-700/60',
+    icon: 'text-red-600 dark:text-red-200',
     bar: 'bg-red-500'
   }
 };
@@ -93,7 +93,7 @@ const ProfilePage: React.FC = () => {
                 {!isEditing && (
                   <Button1
                     variant="ghost"
-                    className="absolute bottom-0 right-0 bg-white dark:bg-gray-800   rounded-full shadow"
+                    className="absolute bottom-0 right-0 bg-white dark:bg-gray-800 rounded-full shadow"
                     onClick={() => setIsEditing(true)}
                   >
                     <Edit size={18} />
@@ -164,37 +164,35 @@ const ProfilePage: React.FC = () => {
           <div>
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Task Overview</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {[
-                {
-                  title: 'Completed',
-                  count: completedTasks.length,
-                  icon: <CheckCircle size={32} />,
-                  color: 'green'
-                },
-                {
-                  title: 'Completion Rate',
-                  count: `${completionRate}%`,
-                  icon: <Activity size={32} />,
-                  color: 'blue'
-                },
-                {
-                  title: 'Active',
-                  count: userTasks.length - completedTasks.length,
-                  icon: <Clock size={32} />,
-                  color: 'amber'
-                },
-                {
-                  title: 'Overdue',
-                  count: overdueTasks.length,
-                  icon: <AlertTriangle size={32} />,
-                  color: 'red'
-                }
-              ].map(({ title, count, icon, color }) => (
+              {[{
+                title: 'Completed',
+                count: completedTasks.length,
+                icon: <CheckCircle size={32} />,
+                color: 'green'
+              },
+              {
+                title: 'Completion Rate',
+                count: `${completionRate}%`,
+                icon: <Activity size={32} />,
+                color: 'blue'
+              },
+              {
+                title: 'Active',
+                count: userTasks.length - completedTasks.length,
+                icon: <Clock size={32} />,
+                color: 'amber'
+              },
+              {
+                title: 'Overdue',
+                count: overdueTasks.length,
+                icon: <AlertTriangle size={32} />,
+                color: 'red'
+              }].map(({ title, count, icon, color }) => (
                 <Card
                   key={title}
-                  className={`p-6 flex items-center gap-4 ${colorMap[color as keyof typeof colorMap].bg} border-0 shadow-md rounded-2xl hover:scale-[1.01] transition`}
+                  className={`p-6 flex items-center gap-4 ${colorMap[color as keyof typeof colorMap].bg} border-0 shadow-md dark:shadow-lg rounded-2xl hover:scale-[1.01] transition`}
                 >
-                  <div className={`p-4 rounded-full ${colorMap[color as keyof typeof colorMap].icon} bg-white/70 dark:bg-gray-800/70`}>
+                  <div className={`p-4 rounded-full ${colorMap[color as keyof typeof colorMap].icon} bg-white/70 dark:bg-gray-900/80`}>
                     {icon}
                   </div>
                   <div>
