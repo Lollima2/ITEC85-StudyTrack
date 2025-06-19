@@ -72,14 +72,10 @@ const HomePage: React.FC = () => {
       });
     } else if (filter === 'upcoming') {
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const overdueTasks = result.filter(
-        (task) => !task.completed && new Date(task.deadline) < today
+      today.setHours(23, 59, 59, 999); // End of today
+      result = result.filter(
+        (task) => !task.completed && new Date(task.deadline) > today
       );
-      const upcomingTasks = getUpcomingTasks(7).filter(
-        (task) => task.userId === user.id && new Date(task.deadline) >= today
-      );
-      result = [...overdueTasks, ...upcomingTasks];
     } else if (filter === 'overdue') {
       const today = new Date();
       today.setHours(0, 0, 0, 0);

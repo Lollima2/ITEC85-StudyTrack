@@ -30,7 +30,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
         <AnimatePresence>
             {visible && (
                 <motion.div
-                    className="fixed top-12 transform -translate-x-1/2 z-50 pointer-events-none"
+                    className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none"
                     initial={{ opacity: 0, y: -40 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -40 }}

@@ -196,8 +196,8 @@ const ProfilePage: React.FC = () => {
                     {icon}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{title}</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{count}</p>
+                    <p className={`text-sm font-medium ${color === 'blue' ? 'text-gray-700 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>{title}</p>
+                    <p className={`text-3xl font-bold ${color === 'blue' ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'}`}>{count}</p>
                   </div>
                 </Card>
               ))}

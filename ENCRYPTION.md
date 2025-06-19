@@ -1,6 +1,6 @@
 # Task Encryption Implementation
 
-This document explains how sensitive task data is encrypted in the StudyTrack application.
+This document explains how sensitive task data is encrypted in the IskoTasks application.
 
 ## Overview
 

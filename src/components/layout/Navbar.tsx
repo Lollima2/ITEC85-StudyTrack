@@ -21,10 +21,10 @@ import Logo from '../icons/StudyTrack_Logo.png';
 export const StudyTrackLogo = () => (
   <div className="flex items-center gap-1">
     <span className="h-10 w-10 flex items-center justify-center ">
-      <img src={Logo} alt="StudyTrack Logo" className="h-8 w-8 rounded-full object-cover" />
+      <img src={Logo} alt="IskoTasks Logo" className="h-8 w-8 rounded-full object-cover" />
     </span>
     <p className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#38BDF8] to-[#027BF9]">
-      IskoTask
+      IskoTasks
     </p>
   </div>
 );
@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
   return (
     <HeroNavbar
       maxWidth="xl"
-      className="fixed top-0 left-0 w-full z-50 bg-white shadow-xl dark:bg-gray-800 dark:border-b dark:border-gray-700"
+      className="fixed top-0 left-0 w-full z-[9999] bg-white shadow-xl dark:bg-gray-800 dark:border-b dark:border-gray-700"
     >
       <NavbarBrand>
         <RouterLink to="/">
