@@ -24,7 +24,7 @@ const colorMap = {
     bar: 'bg-green-500'
   },
   blue: {
-    bg: 'bg-blue-100 dark:bg-blue-600/60',
+    bg: 'bg-blue-100 dark:bg-blue-700/60',
     icon: 'text-blue-600 dark:text-blue-200',
     bar: 'bg-blue-500'
   },
@@ -34,7 +34,7 @@ const colorMap = {
     bar: 'bg-amber-500'
   },
   red: {
-    bg: 'bg-red-100 dark:bg-red-600/60',
+    bg: 'bg-red-100 dark:bg-red-700/60',
     icon: 'text-red-600 dark:text-red-200',
     bar: 'bg-red-500'
   }
