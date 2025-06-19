@@ -4,40 +4,44 @@ import { Task } from '../../types';
 import TaskCard from './TaskCard';
 import TaskForm from './TaskForm';
 import Card from '../ui/Card';
-import Button from '../ui/Button';
+import Button from '../ui/Button1';
 import { Plus, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface TaskListProps {
   title: string;
   tasks: Task[];
   emptyMessage?: string;
+  onShowModal?: (message: string, type: 'add' | 'edit' | 'delete') => void;
 }
 
-const TaskList: React.FC<TaskListProps> = ({ 
-  title, 
-  tasks, 
-  emptyMessage = 'No tasks to display' 
+const TaskList: React.FC<TaskListProps> = ({
+  title,
+  tasks,
+  onShowModal,
+  emptyMessage = 'No tasks to display'
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [isAddingTask, setIsAddingTask] = useState(false);
-  
+
   const handleEditTask = (task: Task) => {
     setEditingTask(task);
   };
-  
+
   const handleCancelEdit = () => {
     setEditingTask(null);
   };
-  
+
   const handleSubmitEdit = () => {
     setEditingTask(null);
+    // ✅ Show success message after editing
+    onShowModal?.('Task edited successfully!', 'edit');
   };
-  
+
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-  
+
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-4">
@@ -47,7 +51,7 @@ const TaskList: React.FC<TaskListProps> = ({
             {tasks.length}
           </span>
         </div>
-        
+
         <div className="flex space-x-2">
           <motion.button
             whileTap={{ scale: 0.95 }}
@@ -56,17 +60,9 @@ const TaskList: React.FC<TaskListProps> = ({
           >
             {isCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
           </motion.button>
-          
-          <Button
-            size="sm"
-            icon={<Plus size={16} />}
-            onClick={() => setIsAddingTask(true)}
-          >
-            Add Task
-          </Button>
         </div>
       </div>
-      
+
       <AnimatePresence>
         {!isCollapsed && (
           <motion.div
@@ -78,24 +74,24 @@ const TaskList: React.FC<TaskListProps> = ({
             {isAddingTask && (
               <Card className="mb-4 p-4">
                 <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">Add New Task</h3>
-                <TaskForm 
+                <TaskForm
                   onSubmit={() => setIsAddingTask(false)}
                   onCancel={() => setIsAddingTask(false)}
                 />
               </Card>
             )}
-            
+
             {editingTask && (
               <Card className="mb-4 p-4">
                 <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">Edit Task</h3>
-                <TaskForm 
+                <TaskForm
                   initialTask={editingTask}
                   onSubmit={handleSubmitEdit}
                   onCancel={handleCancelEdit}
                 />
               </Card>
             )}
-            
+
             <div className="space-y-3">
               <AnimatePresence>
                 {tasks.length > 0 ? (
@@ -107,7 +103,12 @@ const TaskList: React.FC<TaskListProps> = ({
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <TaskCard task={task} onEdit={handleEditTask} />
+                      <TaskCard
+                        task={task}
+                        onEdit={handleEditTask}
+                        // ✅ Pass this so TaskCard can show delete modal too
+                        onShowModal={onShowModal}
+                      />
                     </motion.div>
                   ))
                 ) : (

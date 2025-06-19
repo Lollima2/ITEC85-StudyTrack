@@ -21,10 +21,12 @@ const App: React.FC = () => {
   // Check system preference on initial load
   useEffect(() => {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (prefersDark && theme === 'light') {
+    if (prefersDark) {
       setTheme('dark');
+    } else {
+      setTheme('light');
     }
-  }, [theme, setTheme]);
+  }, [setTheme]);
   
   // Fetch tasks when user logs in
   useEffect(() => {

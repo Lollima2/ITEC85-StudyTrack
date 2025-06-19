@@ -1,58 +1,75 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { 
-  User as UserIcon, 
-  Mail, 
-  CheckCircle, 
-  Clock, 
+import {
+  User as UserIcon,
+  Mail,
+  CheckCircle,
+  Clock,
   Activity,
   AlertTriangle,
   Edit
 } from 'lucide-react';
 import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
+import Button1 from '../components/ui/Button1';
+import { Button } from "@heroui/react";
 import Input from '../components/ui/Input';
 import useAuthStore from '../store/useAuthStore';
 import useTaskStore from '../store/useTaskStore';
 
+const colorMap = {
+  green: {
+    bg: 'bg-green-100 dark:bg-green-900/60',
+    icon: 'text-green-600 dark:text-green-300',
+    bar: 'bg-green-500'
+  },
+  blue: {
+    bg: 'bg-blue-100 dark:bg-blue-800/80',
+    icon: 'text-blue-600 dark:text-blue-300',
+    bar: 'bg-blue-500'
+  },
+  amber: {
+    bg: 'bg-amber-100 dark:bg-yellow-900/80',
+    icon: 'text-amber-600 dark:text-amber-300',
+    bar: 'bg-amber-500'
+  },
+  red: {
+    bg: 'bg-red-100 dark:bg-red-900/60',
+    icon: 'text-red-600 dark:text-red-300',
+    bar: 'bg-red-500'
+  }
+};
+
 const ProfilePage: React.FC = () => {
   const { user, updateProfile } = useAuthStore();
   const { tasks } = useTaskStore();
-  
+
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user?.name || '');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   if (!user) return null;
-  
-  // Calculate task statistics
+
   const userTasks = tasks.filter(task => task.userId === user.id);
   const completedTasks = userTasks.filter(task => task.completed);
-  const completionRate = userTasks.length > 0 
-    ? Math.round((completedTasks.length / userTasks.length) * 100) 
+  const completionRate = userTasks.length > 0
+    ? Math.round((completedTasks.length / userTasks.length) * 100)
     : 0;
-  
-  // Count overdue tasks
-  const overdueTasks = userTasks.filter(task => 
+  const overdueTasks = userTasks.filter(task =>
     !task.completed && new Date(task.deadline) < new Date()
   );
-  
-  // Priority distribution
   const highPriorityTasks = userTasks.filter(task => task.priority === 'high');
   const mediumPriorityTasks = userTasks.filter(task => task.priority === 'medium');
   const lowPriorityTasks = userTasks.filter(task => task.priority === 'low');
-  
+
   const handleSaveProfile = async () => {
     setIsLoading(true);
     try {
-      // Update in MongoDB Atlas
       await axios.post('http://localhost:3000/auth/update-profile', {
         userId: user.id,
         name: name
       });
-      
-      // Update local state
+
       updateProfile({ name });
       setIsEditing(false);
     } catch (error) {
@@ -61,197 +78,158 @@ const ProfilePage: React.FC = () => {
       setIsLoading(false);
     }
   };
-  
+
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Profile card */}
+    <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-24 pb-16">
+      <div className="flex flex-col md:flex-row gap-10">
+        {/* Profile Card */}
         <div className="md:w-1/3">
-          <Card className="p-6">
-            <div className="flex justify-between items-start mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Profile</h2>
-              {!isEditing && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  icon={<Edit size={16} />}
-                  onClick={() => setIsEditing(true)}
-                >
-                  Edit
-                </Button>
-              )}
-            </div>
-            
-            {isEditing ? (
-              <div className="space-y-4">
-                <Input
-                  label="Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  icon={<UserIcon size={18} className="text-gray-400" />}
-                  fullWidth
-                />
-                
-                <div className="flex items-center space-x-3 py-2">
-                  <Mail size={18} className="text-gray-400" />
+          <Card className="p-8 bg-white dark:bg-gray-900/90 backdrop-blur-md shadow-2xl border border-gray-200 dark:border-gray-800 rounded-3xl transition hover:scale-[1.01]">
+            <div className="flex flex-col items-center text-center">
+              <div className="relative">
+                <div className="h-24 w-24 rounded-full bg-gradient-to-tr from-primary-500 to-purple-600 dark:from-primary-800 dark:to-purple-500 flex items-center justify-center text-white shadow-lg text-4xl">
+                  <UserIcon size={40} />
+                </div>
+                {!isEditing && (
+                  <Button1
+                    variant="ghost"
+                    className="absolute bottom-0 right-0 bg-white dark:bg-gray-800   rounded-full shadow"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <Edit size={18} />
+                  </Button1>
+                )}
+              </div>
+              <div className="mt-6 w-full">
+                {isEditing ? (
+                  <div className="space-y-4">
+                    <Input
+                      label="Your Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      icon={<UserIcon size={18} className="text-gray-400" />}
+                      fullWidth
+                    />
+                    <div className="flex items-center gap-2">
+                      <Mail size={18} className="text-gray-400" />
+                      <div className="text-left">
+                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+                      </div>
+                    </div>
+
+                    {/* Button Group */}
+                    <div className="flex justify-end gap-3 pt-4">
+                      <Button
+                        type="button"
+                        variant="bordered"
+                        radius="full"
+                        className="mt-1"
+                        onPress={() => {
+                          setIsEditing(false);
+                          setName(user.name);
+                        }}
+                        disabled={isLoading}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="button"
+                        onPress={handleSaveProfile}
+                        className="bg-gradient-to-tr from-circle1 to-circle2 text-white shadow-lg font-medium mt-1"
+                        radius="full"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? 'Saving...' : 'Save'}
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
                   <div>
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+                    <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">{user.name}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{user.email}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                      Joined on {new Date(user.createdAt).toLocaleDateString()}
+                    </p>
                   </div>
-                </div>
-                
-                <div className="flex justify-end space-x-3 mt-4">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setIsEditing(false);
-                      setName(user.name);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={handleSaveProfile}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? 'Saving...' : 'Save'}
-                  </Button>
-                </div>
+                )}
               </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 h-12 w-12 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-600 dark:text-primary-300">
-                    <UserIcon size={24} />
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">{user.name}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
-                  </div>
-                </div>
-                
-                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Account created on {new Date(user.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-            )}
+            </div>
           </Card>
         </div>
-        
-        {/* Statistics */}
-        <div className="md:w-2/3 space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Task Statistics</h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Card className="p-4">
-              <div className="flex items-center">
-                <div className="p-3 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">
-                  <CheckCircle size={24} />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Completed Tasks</p>
-                  <p className="text-2xl font-semibold text-gray-900 dark:text-white">{completedTasks.length}</p>
-                </div>
-              </div>
-            </Card>
-            
-            <Card className="p-4">
-              <div className="flex items-center">
-                <div className="p-3 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-300">
-                  <Activity size={24} />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Completion Rate</p>
-                  <p className="text-2xl font-semibold text-gray-900 dark:text-white">{completionRate}%</p>
-                </div>
-              </div>
-            </Card>
-            
-            <Card className="p-4">
-              <div className="flex items-center">
-                <div className="p-3 rounded-full bg-amber-100 dark:bg-amber-900 text-amber-600 dark:text-amber-300">
-                  <Clock size={24} />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Active Tasks</p>
-                  <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-                    {userTasks.length - completedTasks.length}
-                  </p>
-                </div>
-              </div>
-            </Card>
-            
-            <Card className="p-4">
-              <div className="flex items-center">
-                <div className="p-3 rounded-full bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300">
-                  <AlertTriangle size={24} />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Overdue Tasks</p>
-                  <p className="text-2xl font-semibold text-gray-900 dark:text-white">{overdueTasks.length}</p>
-                </div>
-              </div>
-            </Card>
+
+        {/* Overview and Priority Cards */}
+        <div className="md:w-2/3 flex flex-col gap-10">
+          {/* Task Overview */}
+          <div>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Task Overview</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {[
+                {
+                  title: 'Completed',
+                  count: completedTasks.length,
+                  icon: <CheckCircle size={32} />,
+                  color: 'green'
+                },
+                {
+                  title: 'Completion Rate',
+                  count: `${completionRate}%`,
+                  icon: <Activity size={32} />,
+                  color: 'blue'
+                },
+                {
+                  title: 'Active',
+                  count: userTasks.length - completedTasks.length,
+                  icon: <Clock size={32} />,
+                  color: 'amber'
+                },
+                {
+                  title: 'Overdue',
+                  count: overdueTasks.length,
+                  icon: <AlertTriangle size={32} />,
+                  color: 'red'
+                }
+              ].map(({ title, count, icon, color }) => (
+                <Card
+                  key={title}
+                  className={`p-6 flex items-center gap-4 ${colorMap[color as keyof typeof colorMap].bg} border-0 shadow-md rounded-2xl hover:scale-[1.01] transition`}
+                >
+                  <div className={`p-4 rounded-full ${colorMap[color as keyof typeof colorMap].icon} bg-white/70 dark:bg-gray-800/70`}>
+                    {icon}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{title}</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white">{count}</p>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
-          
-          <Card className="p-6">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Priority Distribution</h3>
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="font-medium text-red-600 dark:text-red-400">High Priority</span>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    {highPriorityTasks.length} tasks
-                  </span>
+
+          {/* Priority Distribution */}
+          <Card className="p-8 bg-white dark:bg-gray-900/90 backdrop-blur border border-gray-200 dark:border-gray-800 rounded-3xl shadow-lg">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Priority Distribution</h3>
+            <div className="space-y-5">
+              {[{ label: 'High', count: highPriorityTasks.length, color: 'red' },
+              { label: 'Medium', count: mediumPriorityTasks.length, color: 'amber' },
+              { label: 'Low', count: lowPriorityTasks.length, color: 'green' }].map(({ label, count, color }) => (
+                <div key={label}>
+                  <div className="flex justify-between mb-1">
+                    <span className={`text-sm font-medium ${colorMap[color as keyof typeof colorMap].icon}`}>
+                      {label} Priority
+                    </span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">{count} task{count !== 1 ? 's' : ''}</span>
+                  </div>
+                  <div className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${(count / Math.max(userTasks.length, 1)) * 100}%` }}
+                      transition={{ duration: 0.6, ease: 'easeOut' }}
+                      className={`h-full ${colorMap[color as keyof typeof colorMap].bar} rounded-full`}
+                    />
+                  </div>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${(highPriorityTasks.length / Math.max(userTasks.length, 1)) * 100}%` }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="bg-red-500 h-2 rounded-full"
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="font-medium text-amber-600 dark:text-amber-400">Medium Priority</span>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    {mediumPriorityTasks.length} tasks
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${(mediumPriorityTasks.length / Math.max(userTasks.length, 1)) * 100}%` }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="bg-amber-500 h-2 rounded-full"
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="font-medium text-green-600 dark:text-green-400">Low Priority</span>
-                  <span className="text-gray-500 dark:text-gray-400">
-                    {lowPriorityTasks.length} tasks
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${(lowPriorityTasks.length / Math.max(userTasks.length, 1)) * 100}%` }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="bg-green-500 h-2 rounded-full"
-                  />
-                </div>
-              </div>
+              ))}
             </div>
           </Card>
         </div>
