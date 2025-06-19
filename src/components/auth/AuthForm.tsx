@@ -66,9 +66,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
       } else if (!/(?=.*[@$!%*?&])/.test(formData.password)) {
         newErrors.password = 'Password must contain at least one special character (@$!%*?&)';
       }
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
     }
+    // else if (formData.password.length < 6) {
+    //   newErrors.password = 'Password must be at least 6 characters';
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -143,9 +144,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
           </div>
 
           {authError && (
-            <div className="flex items-center gap-2 mt-3 px-4 py-1 rounded-full border border-red-300 dark:border-red-700 bg-red-50/60 dark:bg-red-900/40 text-red-700 dark:text-red-200 text-sm font-medium backdrop-blur-md animate-shake transition-all duration-300">
+            <div className="flex items-start gap-2 mt-3 px-4 py-1 rounded-md border border-red-300 dark:border-red-700 bg-red-50/60 dark:bg-red-900/40 text-red-700 dark:text-red-200 text-sm font-medium backdrop-blur-md animate-shake transition-all duration-300 break-words whitespace-normal">
               <svg
-                className="w-4 h-4 text-red-600 dark:text-red-300"
+                className="w-4 h-4 mt-1 text-red-600 dark:text-red-300 flex-shrink-0"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
@@ -157,9 +158,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
                   d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"
                 />
               </svg>
-              <span>{authError}</span>
+              <span className="break-words">{authError}</span>
             </div>
           )}
+
 
           <Button
             type="submit"

@@ -24,7 +24,7 @@ const colorMap = {
     bar: 'bg-green-500'
   },
   blue: {
-    bg: 'bg-blue-100 dark:bg-blue-700/60',
+    bg: 'bg-blue-100 dark:bg-blue-600/60',
     icon: 'text-blue-600 dark:text-blue-200',
     bar: 'bg-blue-500'
   },
@@ -70,9 +70,11 @@ const ProfilePage: React.FC = () => {
         name: name
       });
 
-      updateProfile({ name });
+      updateProfile({ name }); // updates store
+      setName(name); // updates local state, if user reloads
       setIsEditing(false);
     } catch (error) {
+      // Optionally, show an error message to the user
       console.error('Failed to update profile:', error);
     } finally {
       setIsLoading(false);
