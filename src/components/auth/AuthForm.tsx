@@ -6,7 +6,6 @@ import { Button } from "@heroui/react";
 import Input from '../ui/Input';
 import Card from '../ui/Card';
 
-
 interface AuthFormProps {
   type: 'login' | 'signup';
   onSubmit: (data: AuthFormData, setAuthError: (error: string) => void) => void;
@@ -36,14 +35,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
       });
     }
 
-    // Clear auth error if user changes input
     if (authError) setAuthError('');
   };
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
 
-    if (type === 'signup' && !formData.name?.trim()) {
+    if (type === 'signup' && !(formData.name?.trim() ?? '')) {
       newErrors.name = 'Name is required';
     }
 
@@ -67,7 +65,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
     e.preventDefault();
     if (validateForm()) {
       setAuthError('');
-      onSubmit(formData, setAuthError); // <- pass the setter
+      onSubmit(formData, setAuthError);
     }
   };
 
@@ -83,7 +81,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
           {type === 'login' ? 'Welcome Back' : 'Create Your Account'}
         </h2>
-
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {type === 'signup' && (
@@ -132,8 +129,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
             </button>
           </div>
 
-            {authError && (
-              <div className="flex items-center gap-2 mt-3 px-4 py-1 rounded-full border border-red-300 dark:border-red-700 bg-red-50/60 dark:bg-red-900/40 text-red-700 dark:text-red-200 text-sm font-medium backdrop-blur-md animate-shake transition-all duration-300">
+          {authError && (
+            <div className="flex items-center gap-2 mt-3 px-4 py-1 rounded-full border border-red-300 dark:border-red-700 bg-red-50/60 dark:bg-red-900/40 text-red-700 dark:text-red-200 text-sm font-medium backdrop-blur-md animate-shake transition-all duration-300">
               <svg
                 className="w-4 h-4 text-red-600 dark:text-red-300"
                 fill="none"
@@ -142,14 +139,14 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
                 viewBox="0 0 24 24"
               >
                 <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"
                 />
               </svg>
-              </div>
-            )}
-            
+              <span>{authError}</span>
+            </div>
+          )}
 
           <Button
             type="submit"
@@ -174,8 +171,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, onToggleForm }) => 
           </p>
         </div>
       </motion.div>
-
-
     </Card>
   );
 };
