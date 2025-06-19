@@ -19,22 +19,22 @@ import useTaskStore from '../store/useTaskStore';
 
 const colorMap = {
   green: {
-    bg: 'bg-green-100 dark:bg-green-700/60',
+    bg: 'bg-green-100 dark:bg-green-600/60',
     icon: 'text-green-600 dark:text-green-200',
     bar: 'bg-green-500'
   },
   blue: {
-    bg: 'bg-blue-100 dark:bg-blue-700/60',
+    bg: 'bg-blue-100 dark:bg-blue-600/60',
     icon: 'text-blue-600 dark:text-blue-200',
     bar: 'bg-blue-500'
   },
   amber: {
-    bg: 'bg-amber-100 dark:bg-yellow-700/60',
+    bg: 'bg-amber-100 dark:bg-yellow-600/60',
     icon: 'text-amber-600 dark:text-yellow-200',
     bar: 'bg-amber-500'
   },
   red: {
-    bg: 'bg-red-100 dark:bg-red-700/60',
+    bg: 'bg-red-100 dark:bg-red-600/60',
     icon: 'text-red-600 dark:text-red-200',
     bar: 'bg-red-500'
   }
