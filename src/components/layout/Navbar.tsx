@@ -61,17 +61,24 @@ const Navbar: React.FC = () => {
         </RouterLink>
       </NavbarBrand>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {isAuthenticated && (
-          <NavbarItem>
-            <RouterLink to="/" className={hoverBox + ' text-sm font-medium'}>
-              Tasks
-            </RouterLink>
-          </NavbarItem>
-        )}
-      </NavbarContent>
 
       <NavbarContent justify="end">
+        {isAuthenticated && (
+            <NavbarItem>
+            <Button
+              as={RouterLink}
+              to="/"
+              variant="light"
+              size="sm"
+              className={
+              hoverBox +
+              ' text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors'
+              }
+            >
+              Tasks
+            </Button>
+            </NavbarItem>
+        )}
         <NavbarItem>
           <Button
             isIconOnly
