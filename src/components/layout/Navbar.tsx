@@ -16,12 +16,13 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { BookOpen, Moon, Sun, User, LogOut } from 'lucide-react';
 import useAuthStore from '../../store/useAuthStore';
 import useThemeStore from '../../store/useThemeStore';
+import Logo from '../icons/StudyTrack_Logo.png';
 
 export const StudyTrackLogo = () => (
-  <div className="flex items-center gap-2">
-    <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-[#38BDF8] to-[#027BF9] flex items-center justify-center">
-      <BookOpen size={18} className="text-white" />
-    </div>
+  <div className="flex items-center gap-1">
+    <span className="h-10 w-10 flex items-center justify-center ">
+      <img src={Logo} alt="StudyTrack Logo" className="h-8 w-8 rounded-full object-cover" />
+    </span>
     <p className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#38BDF8] to-[#027BF9]">
       StudyTrack
     </p>
