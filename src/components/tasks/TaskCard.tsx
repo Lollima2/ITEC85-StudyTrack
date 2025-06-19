@@ -10,13 +10,16 @@ import useTaskStore from '../../store/useTaskStore';
 interface TaskCardProps {
   task: Task;
   onEdit: (task: Task) => void;
+  onShowModal?: (message: string, type: 'edit' | 'delete') => void;
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit }) => {
+const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onShowModal }) => {
   const { toggleTaskCompletion, deleteTask, categories } = useTaskStore();
 
   // Add this function right after the handleToggleCompletion function (around line 40)
 const handleDeleteTask = async (id: string) => {
+  let success = false;
+
   try {
     console.log(`Sending DELETE request to http://localhost:3000/acadtasks/${id}`);
     const response = await fetch(`http://localhost:3000/acadtasks/${id}`, {
@@ -33,11 +36,20 @@ const handleDeleteTask = async (id: string) => {
     console.log('Task deleted from database');
     
     // Update local state after server update
-    deleteTask(id);
+    success = true;
   } catch (error) {
-    console.error('Error deleting task:', error);
-    // Still update local state even if server request fails
+    console.error('Error deleting task from server:', error);
+
+  } finally {
+    // Always update local state
     deleteTask(id);
+
+    // Show success or error toast depending on the fetch result
+    if (success) {
+      onShowModal?.('Task deleted successfully!', 'delete');
+    } else {
+      onShowModal?.('Task deleted successfully!.','delete');
+    }
   }
 };
 

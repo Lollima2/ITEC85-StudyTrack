@@ -10,6 +10,10 @@ import StudyTipPopup from '../components/ui/StudyTipPopup';
 import useTaskStore from '../store/useTaskStore';
 import useAuthStore from '../store/useAuthStore';
 import { Task } from '../types';
+
+import NotificationModal from "../components/ui/NotificationModal";
+import { useLocation } from 'react-router-dom';
+import useToast from '../store/useToast';
 import WeatherWidget from '../components/widgets/WeatherWidget';
 import SpotifyWidget from '../components/widgets/SpotifyWidget';
 import ClockWidget from '../components/widgets/ClockWidget';
@@ -19,10 +23,31 @@ const HomePage: React.FC = () => {
   const { user } = useAuthStore();
   const { tasks, categories, getUpcomingTasks } = useTaskStore();
 
+  const location = useLocation();
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    if (location.state?.showToast && location.state?.toastMessage) {
+      showToast(location.state.toastMessage, "success");
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state, showToast]);
+
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [filter, setFilter] = useState<'all' | 'today' | 'upcoming' | 'completed' | 'overdue'>('all');
   const [priorityFilter, setPriorityFilter] = useState<Task['priority'] | 'all'>('all');
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalType, setModalType] = useState<"add" | "edit" | "delete">("add");
+
+  const showModal = (message: string, type: "add" | "edit" | "delete") => {
+    setModalMessage(message);
+    setModalType(type);
+    setModalVisible(true);
+
+    setTimeout(() => setModalVisible(false), 3000); // Hide after 3 seconds
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -204,6 +229,55 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isAddingTask && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mb-6"
+          >
+            <Card className="p-6">
+              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Create New Task</h2>
+              <TaskForm
+                onSubmit={() => {
+                  showModal("Task added successfully!", "add");
+                  setIsAddingTask(false);
+                }}
+                onCancel={() => setIsAddingTask(false)}
+              />
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {filter !== 'completed' && (
+        <TaskList
+          title="Incomplete Tasks"
+          tasks={incompleteTasks}
+          emptyMessage="No incomplete tasks. Great job!"
+          onShowModal={showModal}
+        />
+      )}
+
+      {filter !== 'upcoming' && filter !== 'overdue' && (
+        <TaskList
+          title="Completed Tasks"
+          tasks={completedTasks}
+          emptyMessage="You haven't completed any tasks yet."
+          onShowModal={showModal}
+        />
+      )}
+
+      <NotificationModal
+        message={modalMessage}
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        type={modalType}
+      />
+
     </div>
   );
 

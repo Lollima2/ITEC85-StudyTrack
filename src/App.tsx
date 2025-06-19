@@ -12,6 +12,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import useThemeStore from './store/useThemeStore';
 import useAuthStore from './store/useAuthStore';
 import useTaskStore from './store/useTaskStore';
+import AppToast from './components/ui/AppToast';
 
 const App: React.FC = () => {
   const { theme, setTheme } = useThemeStore();
@@ -40,6 +41,7 @@ const App: React.FC = () => {
   
   return (
     <ThemeProvider>
+      <AppToast />
       <Router>
         <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
           <Navbar />

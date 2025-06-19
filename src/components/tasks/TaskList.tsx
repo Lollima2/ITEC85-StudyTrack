@@ -11,12 +11,14 @@ interface TaskListProps {
   title: string;
   tasks: Task[];
   emptyMessage?: string;
+  onShowModal?: (message: string, type: 'add' | 'edit' | 'delete') => void;
 }
 
 const TaskList: React.FC<TaskListProps> = ({ 
   title, 
   tasks, 
-  emptyMessage = 'No tasks to display' 
+  emptyMessage,
+  onShowModal, 
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -32,6 +34,11 @@ const TaskList: React.FC<TaskListProps> = ({
   
   const handleSubmitEdit = () => {
     setEditingTask(null);
+    onShowModal?.('Task edited successfully!', 'edit');
+  };
+
+  const handleDeleteTask = () => {
+    onShowModal?.('Task deleted successfully!', 'delete');
   };
   
   const handleToggleCollapse = () => {
@@ -71,7 +78,10 @@ const TaskList: React.FC<TaskListProps> = ({
               <Card className="mb-4 p-4">
                 <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">Add New Task</h3>
                 <TaskForm 
-                  onSubmit={() => setIsAddingTask(false)}
+                  onSubmit={() => {
+                    setIsAddingTask(false);
+                    onShowModal?.('Task added successfully!', 'add');
+                  }}
                   onCancel={() => setIsAddingTask(false)}
                 />
               </Card>
@@ -99,7 +109,11 @@ const TaskList: React.FC<TaskListProps> = ({
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <TaskCard task={task} onEdit={handleEditTask} />
+                      <TaskCard 
+                        task={task} 
+                        onEdit={handleEditTask} 
+                        onShowModal={onShowModal} 
+                      />
                     </motion.div>
                   ))
                 ) : (
