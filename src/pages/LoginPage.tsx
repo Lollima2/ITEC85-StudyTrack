@@ -64,7 +64,7 @@ const LoginPage: React.FC = () => {
               className="w-56 h-56 mb-6"
             />
             <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
-              Welcome to StudyTrack!
+              Welcome to IskoTasks!
             </h2>
             <p className="mt-4 text-gray-600 dark:text-gray-300 max-w-sm">
               Stay on top of your academic tasks with ease. Let's make study time smarter!
@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
             className="mb-6"
           >
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center">
-              Log in to StudyTrack
+              Log in to IskoTasks
             </h1>
             <p className="mt-2 text-gray-600 dark:text-gray-300 text-center">
               Enter your credentials to access your dashboard.

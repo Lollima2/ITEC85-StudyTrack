@@ -63,7 +63,8 @@ const SignupPage: React.FC = () => {
               alt="Hero Icon"
               className="w-56 h-56 mb-6 mx-auto"
             />
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Welcome to StudyTrack!</h2>
+            <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Welcome to IskoTasks!</h2>
+
             <p className="mt-4 text-gray-600 dark:text-gray-300 max-w-sm">
               Stay on top of your academic tasks with ease. Let's make study time smarter!
             </p>
@@ -79,7 +80,7 @@ const SignupPage: React.FC = () => {
             className="mb-6"
           >
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center">
-              Join StudyTrack Today
+              Join IskoTasks Today
             </h1>
             <p className="mt-2 text-gray-600 dark:text-gray-300 text-center">
               Create your account and start organizing your academic life efficiently.

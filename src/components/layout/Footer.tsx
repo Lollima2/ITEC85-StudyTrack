@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
           <div className="flex items-center gap-3">
             <img src={Logo} alt="StudyTrack Logo" className="h-20 w-20 object-cover " />
             <span className="text-3xl font-bold bg-gradient-to-tr from-[#38BDF8] to-[#027BF9] bg-clip-text text-transparent">
-              StudyTrack
+              IskoTask
             </span>
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400 text-center md:text-left">

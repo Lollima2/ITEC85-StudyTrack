@@ -76,7 +76,7 @@ const StudyTipPopup = () => {
                 textShadow: '0 1px 2px rgba(2, 123, 249, 0.5)' // subtle glow
               }}
             >
-              Study Tip
+              IskoTasks Tip
             </span>
           </div>
 
